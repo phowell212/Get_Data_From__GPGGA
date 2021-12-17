@@ -29,11 +29,7 @@ int main() {
         char in[CSIZE*12];
         instream.open("/dev/ttyACM0");
 
-        // gets the last line of /dev/AMC0
-        while(!instream.eof())
-        {
-            instream.getline(in,256);
-        }
+        //char in = FUNCT TO GET THE LAST LINE OF /dev/ttyACM0
 
         // making a new char array just for the cords
         char cords[CSIZE];
@@ -43,8 +39,6 @@ int main() {
         for(int i = 0; i < CSIZE; i++){
             cout<<cords[i];
         }
-
-        bool out = true;
-        if(out) break;
+        cout<<endl;
     }
 }
