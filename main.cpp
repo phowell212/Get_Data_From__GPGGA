@@ -50,8 +50,9 @@ int main() {
         // data is held in /dev/ttyASSIGNEDDEVICECODE in my case the name is ttyACM0
 
         // putting the data file into a string
-        string inFileName = "/mnt/c/Users/Phineas/CLionProjects/Get_Data_From_$GPGGA/datatest.txt";
-        ifstream inFile;
+        //string inFileName = "/mnt/c/Users/Phineas/CLionProjects/Get_Data_From_$GPGGA/datatest.txt";
+        string inFileName = "/dev/ttyACM0";
+	ifstream inFile;
         inFile.open(inFileName.c_str());
 
         int y = 52*8;
