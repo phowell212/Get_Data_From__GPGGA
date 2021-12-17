@@ -19,7 +19,6 @@ void getcords(const char* GPGGA, int size, char* cords){
         }
     }
 }
-// commit line
 
 int main() {
     while(true){
