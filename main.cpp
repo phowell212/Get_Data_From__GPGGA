@@ -1,8 +1,11 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include <unistd.h>
 //#include <fstream>
 #define CSIZE 52
 using namespace std;
+using namespace std::chrono_literals;
 
 void getcords(const char* GPGGA, int size, char* cords){
 
@@ -29,16 +32,16 @@ int kbhit(){
     FD_ZERO(&fds);
     FD_SET(STDIN_FILENO, &fds); //STDIN_FILENO is 0
     select(STDIN_FILENO+1, &fds, nullptr, nullptr, &tv);
+
+    // no need to put a return in main because the return is here
     return FD_ISSET(STDIN_FILENO, &fds);
 }
-
 
 int main() {
 
     // while the enter key has not been pressed yet
-    // you might have to hold the key in order for it to be registered as pressed
+    // you might have to hold the key for 1 second order for it to be registered as pressed because of the sleep
     while(!kbhit()){
-
         // use "dmesg | grep tty" to get serial info and look for USB ACM device
         // data is held in /dev/ttyASSIGNEDDEVICECODE in my case the name is ttyACM0
         char in[CSIZE*12];
@@ -57,5 +60,8 @@ int main() {
             cout<<cord;
         }
         cout<<endl;
+
+        // GPS only gets new cords every 1 second, so we will delay for 1 second minus runtime
+        std::this_thread::sleep_for(1s);
     }
 }
