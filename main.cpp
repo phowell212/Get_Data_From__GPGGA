@@ -7,9 +7,12 @@
 using namespace std;
 using namespace std::chrono_literals;
 
-int getcords(const char* GPGGA, int size, char* cords, int g ){
+int getcords(const char* GPGGA, int size, char* cords, int g = 0 ){
     // loop
     // g serves as a continuous i
+    // if the code stops working put
+    /// g = 0
+    // back into the code and then it will continuously get the closest GPGGA on the device.
     while(g < size){
         // Checking for GPGGA
         if(GPGGA[g] == '$' && GPGGA[g + 1] == 'G' && GPGGA[g + 2] == 'P' && GPGGA[g + 3] == 'G' && GPGGA[g + 4] == 'G'){
