@@ -1,6 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <string>
+//#include <fstream>
 #define CSIZE 52
 using namespace std;
 
@@ -22,14 +21,13 @@ void getcords(const char* GPGGA, int size, char* cords){
 
 int main() {
     while(true){
-        std::ifstream instream;
 
         // use "dmesg | grep tty" to get serial info and look for USB ACM device
         // data is held in /dev/ttyASSIGNEDDEVICECODE in my case the name is ttyAMC0
         char in[CSIZE*12];
-        instream.open("/dev/ttyACM0");
+        //instream.open("/dev/ttyACM0");
 
-        //char in = FUNCT TO GET THE LAST LINE OF /dev/ttyACM0
+        //char in = FUNC TO GET THE LAST LINE OF /dev/ttyACM0
 
         // making a new char array just for the cords
         char cords[CSIZE];
