@@ -11,7 +11,7 @@ int getcords(const char* GPGGA, int size, char* cords, int g = 0 ){
     // loop
     // g serves as a continuous i
     // if the code stops working put
-    /// g = 0
+    // g = 0
     // back into the code and then it will continuously get the closest GPGGA on the device.
     while(g < size){
         // Checking for GPGGA
