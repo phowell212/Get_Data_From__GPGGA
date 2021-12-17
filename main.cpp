@@ -43,7 +43,7 @@ int main() {
         // data is held in /dev/ttyASSIGNEDDEVICECODE in my case the name is ttyAMC0
         char in[CSIZE*12];
 
-        // gets the last line of ttyAMC0 and stores it in in
+        // gets the last line of ttyAMC0 and stores it in a char array called in
         ///instream.open("/dev/ttyAMC0");
         ///char in = FUNC TO GET THE LAST LINE OF /dev/ttyAMC0
         ///instream.close("/dev/ttyAMC0");
