@@ -2,24 +2,25 @@
 #include <chrono>
 #include <thread>
 #include <unistd.h>
-//#include <fstream>
-#define CSIZE 52
+#include <fstream>
+#define CSIZE 26
 using namespace std;
 using namespace std::chrono_literals;
 
-void getcords(const char* GPGGA, int size, char* cords){
-
+int getcords(const char* GPGGA, int size, char* cords, int g ){
     // loop
-    for(int i = 0; i < size; i++){
+    // g serves as a continuous i
+    while(g < size){
         // Checking for GPGGA
-        if(GPGGA[i] == '$' && GPGGA[i + 1] == 'G' && GPGGA[i + 2] == 'P' && GPGGA[i + 3] == 'G'){
-            i+=7; // to jump
+        if(GPGGA[g] == '$' && GPGGA[g + 1] == 'G' && GPGGA[g + 2] == 'P' && GPGGA[g + 3] == 'G' && GPGGA[g + 4] == 'G'){
+            g+=17; // to jump
             // dump GPGGA into cords
             for(int j = 0; j < CSIZE; j++){
-                cords[j]=GPGGA[i];
-                i++;
+                cords[j]=GPGGA[g];
+                g++;
             }
-        }
+            return g;
+        }g++;
     }
 }
 
@@ -38,30 +39,51 @@ int kbhit(){
 }
 
 int main() {
-
     // while the enter key has not been pressed yet
     // you might have to hold the key for 1 second order for it to be registered as pressed because of the sleep
+    int g = 0;
     while(!kbhit()){
         // use "dmesg | grep tty" to get serial info and look for USB ACM device
         // data is held in /dev/ttyASSIGNEDDEVICECODE in my case the name is ttyACM0
-        char in[CSIZE*12];
 
-        // gets the last line of ttyAMC0 and stores it in a char array called in
-        ///instream.open("/dev/ttyACM0");
-        ///char in = FUNC TO GET THE LAST LINE OF /dev/ttyACM0
-        ///instream.close("/dev/ttyACM0");
+        // putting the data file into a string
+        string inFileName = "/mnt/c/Users/Phineas/CLionProjects/Get_Data_From_$GPGGA/datatest.txt";
+        ifstream inFile;
+        inFile.open(inFileName.c_str());
 
+        int y = 52*8;
+        char in[y];
+        if (inFile.is_open())
+        {
+            for (int i = 0; i < y; i++)
+            {
+                inFile >> in[i];
+            }
+
+            inFile.close(); // close input file
+        }
+        else { // error message
+            cerr << "Can't find input file " << inFileName << endl;
+        }
         // making a new char array just for the cords
         char cords[CSIZE];
-        getcords(in, CSIZE*12, cords);
+        g = getcords(in, y, cords, g);
 
-        // print cords
+        // convert cords to a string to print it because printing the car array was buggy
+        string out;
         for(char cord : cords){
-            cout<<cord;
+            if(cord == ',') {
+                out += cord;
+                out += " ";
+            }else{
+                out +=cord;
+            }
         }
-        cout<<endl;
+        cout<<out<<endl;
 
         // GPS only gets new cords every 1 second, so we will delay for 1 second minus runtime
+        // eventually it will go out of sync as the time spent executing code adds up
+        // setting up a timer and sleeping for that time didn't work, the function only takes pure ints
         std::this_thread::sleep_for(1s);
     }
 }
